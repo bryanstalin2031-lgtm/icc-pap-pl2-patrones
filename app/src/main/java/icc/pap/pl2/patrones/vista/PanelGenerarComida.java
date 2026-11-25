@@ -1,5 +1,7 @@
 package icc.pap.pl2.patrones.vista;
 
-public class PanelGenerarComida {
+
+public class PanelGenerarComida  {
+
     
 }

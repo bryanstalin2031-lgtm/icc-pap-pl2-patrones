@@ -1,5 +1,12 @@
 package icc.pap.pl2.patrones.factoryMethod;
 
-public class FabricaComidaDoble {
+import icc.pap.pl2.patrones.models.Coordenada;
+
+public class FabricaComidaDoble extends FabricaComida{
+
+    @Override
+    protected Comida crearComida(Coordenada posicion) {
+        return new ComidaDoble(posicion);
+    }
     
 }
