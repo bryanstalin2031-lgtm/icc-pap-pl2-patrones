@@ -1,9 +1,9 @@
 package icc.pap.pl2.patrones.vista;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.*;
 
-/** Tarjetas de Puntos, Récord y Ritmo (según el intervalo de desplazamiento). */
+import javax.swing.*;
+
 public class PanelEstadisticas extends JPanel {
 
     private final JLabel puntos = valor(26f);

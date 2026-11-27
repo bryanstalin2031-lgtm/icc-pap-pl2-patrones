@@ -2,6 +2,7 @@ package icc.pap.pl2.patrones.juego;
 
 import java.util.List;
 
+import icc.pap.pl2.patrones.decorator.EfectoActivo;
 import icc.pap.pl2.patrones.decorator.ReglasBase;
 import icc.pap.pl2.patrones.decorator.ReglasJuego;
 import icc.pap.pl2.patrones.factoryMethod.Comida;
@@ -27,6 +28,7 @@ public class Partida {
     private ReglasJuego reglas;
     private EstadoPartida estado;
     private int puntaje;
+    private int record;
 
     public Partida() {
         this(new Tablero(), new UbicadorComida());
@@ -36,8 +38,9 @@ public class Partida {
     public Partida(Tablero tablero, UbicadorComida ubicador) {
         this.tablero = tablero;
         this.ubicador = ubicador;
-        resetar();
+        resetear();
     }
+
 
     public ResultadoOperacion iniciar() {
         return estado.iniciar(this);
@@ -47,16 +50,16 @@ public class Partida {
         return estado.pausar(this);
     }
 
-    public ResultadoOperacion renaudar() {
+    public ResultadoOperacion reanudar() {
         return estado.reanudar(this);
     }
 
     public ResultadoOperacion reiniciar() {
-        return estado.reiniciar();
+        return estado.reiniciar(this);
     }
 
     public ResultadoOperacion tick() {
-        return estado.avanzar();
+        return estado.avanzar(this);
     }
 
     public ResultadoOperacion girar(Direccion direccion) {
@@ -67,7 +70,7 @@ public class Partida {
         return estado.ubicarManual(this, x, y, tipo);
     }
 
-    public ResultadoOperacion ubicarAletoria(TipoComida tipo) {
+    public ResultadoOperacion ubicarAleatoria(TipoComida tipo) {
         return estado.ubicarAleatoria(this, tipo);
     }
 
@@ -75,7 +78,7 @@ public class Partida {
         this.estado = nuevo;
     }
 
-    public void resetar() {
+    public void resetear() {
         int xCabeza = Math.min(4, tablero.ancho() - 1);
         serpiente = new Serpiente(new Coordenada(xCabeza, tablero.alto() / 2), Direccion.DERECHA, LONGITUD_INICIAL);
         reglas = new ReglasBase();
@@ -83,25 +86,27 @@ public class Partida {
         comidaActual = null;
         estado = new Preparado();
         if (!tableroCompleto()) {
-            colocarAletoria(TipoComida.NORMAL);
+            colocarAleatoria(TipoComida.NORMAL);
         }
-
     }
 
     public ResultadoOperacion colocarManual(String x, String y, TipoComida tipo) {
-        ResultadoOperacion u = ubicador.validartManual(x, y, tablero, serpiente);
+        ResultadoUbicacion u = ubicador.validarManual(x, y, tablero, serpiente);
         return u.valido() ? fijarComida(u.coordenada(), tipo) : ResultadoOperacion.rechazo(u.mensaje());
     }
 
-    public ResultadoOperacion colocarAletoria(TipoComida tipo) {
-        ResultadoOperacion u = ubicador.elegirAletoria(tablero, serpiente);
+    public ResultadoOperacion colocarAleatoria(TipoComida tipo) {
+        ResultadoUbicacion u = ubicador.elegirAleatoria(tablero, serpiente);
         return u.valido() ? fijarComida(u.coordenada(), tipo) : ResultadoOperacion.rechazo(u.mensaje());
+    }
 
+    public ResultadoOperacion colocarAutomatica() {
+        return colocarAleatoria(ubicador.elegirTipoAleatorio());
     }
 
     private ResultadoOperacion fijarComida(Coordenada c, TipoComida tipo) {
         comidaActual = fabricas.obtener(tipo).generar(c);
-        return ResultadoOperacion.ok("Comida " + tipo + "ubicada en(" + c.x() + ", " + c.y() + ").");
+        return ResultadoOperacion.ok("Comida " + tipo + " ubicada en (" + c.x() + ", " + c.y() + ").");
     }
 
     public boolean tableroCompleto() {
@@ -112,6 +117,10 @@ public class Partida {
         return !tablero.estaDentro(c);
     }
 
+    public boolean colisiona(Coordenada destino, boolean crecer) {
+        return fueraDelTablero(destino) || serpiente.chocaConCuerpo(destino, crecer);
+    }
+
     public boolean hayComidaEn(Coordenada c) {
         return comidaActual != null && comidaActual.posicion().equals(c);
     }
@@ -119,6 +128,7 @@ public class Partida {
     public void consumirComida() {
         reglas = comidaActual.aplicarEfecto(reglas);
         puntaje += reglas.calcularPuntos(comidaActual.puntosBase());
+        record = Math.max(record, puntaje);
         comidaActual = null;
     }
 
@@ -126,6 +136,7 @@ public class Partida {
         reglas.avanzarTick();
         reglas = reglas.limpiarExpirados();
     }
+
 
     public Tablero tablero() {
         return tablero;
@@ -143,11 +154,15 @@ public class Partida {
         return puntaje;
     }
 
+    public int record() {
+        return record;
+    }
+
     public int intervaloMs() {
         return reglas.intervaloMs();
     }
 
-    public List<String> efectosActivos() {
+    public List<EfectoActivo> efectosActivos() {
         return reglas.efectosActivos();
     }
 

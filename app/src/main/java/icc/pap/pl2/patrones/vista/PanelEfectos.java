@@ -1,5 +1,6 @@
 package icc.pap.pl2.patrones.vista;
 
+import java.awt.*;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -7,7 +8,6 @@ import javax.swing.JPanel;
 import icc.pap.pl2.patrones.decorator.EfectoActivo;
 import icc.pap.pl2.patrones.models.TipoComida;
 
-/** Dos tarjetas fijas (Puntuación doble y Velocidad) con ticks restantes y barra de duración. */
 public class PanelEfectos extends JPanel {
 
     private final TarjetaEfecto doble = new TarjetaEfecto(TipoComida.PUNTUACION_DOBLE);

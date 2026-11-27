@@ -5,14 +5,18 @@ import icc.pap.pl2.patrones.juego.ResultadoOperacion;
 import icc.pap.pl2.patrones.models.Direccion;
 import icc.pap.pl2.patrones.models.TipoComida;
 
-/** Se bloquean los desplazamientos; solo Reiniciar permite recuperar la partida. */
+/**
+ * Se bloquean los desplazamientos; solo Reiniciar permite recuperar la partida.
+ */
 public class Terminado implements EstadoPartida {
 
-    private static final String BLOQUEADO = "La partida terminó: use Reiniciar.";
+    private static final String BLOQUEADO = "La partida terminó: presione Iniciar para jugar de nuevo.";
 
     @Override
     public ResultadoOperacion iniciar(Partida partida) {
-        return ResultadoOperacion.rechazo(BLOQUEADO);
+        partida.resetear();
+        partida.cambiarEstado(new Jugando());
+        return ResultadoOperacion.ok("Nueva partida iniciada.");
     }
 
     @Override

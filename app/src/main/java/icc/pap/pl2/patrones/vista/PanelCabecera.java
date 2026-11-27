@@ -1,8 +1,11 @@
 package icc.pap.pl2.patrones.vista;
 
+import java.awt.*;
+
 import javax.swing.JComponent;
 
-/** Logo, título y la insignia con el estado actual de la partida. */
+import icc.pap.pl2.patrones.models.TipoComida;
+
 public class PanelCabecera extends JComponent {
 
     private String estado = "PREPARADO";
@@ -40,9 +43,6 @@ public class PanelCabecera extends JComponent {
         g2.drawString("Snake ", 58, 26);
         g2.setColor(Tema.ACENTO);
         g2.drawString("Lab", 58 + fm.stringWidth("Snake "), 26);
-        g2.setFont(Tema.fuente(12f));
-        g2.setColor(Tema.TEXTO_SUAVE);
-        g2.drawString("Minijuego con State, Decorator y Factory Method", 58, 44);
 
         Color color = colorEstado();
         g2.setFont(Tema.negrita(12f));

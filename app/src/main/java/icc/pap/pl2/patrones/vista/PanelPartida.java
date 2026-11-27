@@ -1,12 +1,14 @@
 package icc.pap.pl2.patrones.vista;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.util.function.Consumer;
+
+import javax.swing.*;
+import java.awt.*;
 
 import com.google.common.base.Supplier;
 
 import icc.pap.pl2.patrones.juego.Partida;
+import icc.pap.pl2.patrones.juego.ResultadoOperacion;
 
 /** Botones Iniciar, Pausar, Reanudar y Reiniciar, y el estado actual. Los listeners solo delegan. */
 public class PanelPartida extends PanelRedondeado {

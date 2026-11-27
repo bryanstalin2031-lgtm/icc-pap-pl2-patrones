@@ -3,12 +3,13 @@
  */
 package icc.pap.pl2.patrones;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import javax.swing.SwingUtilities;
 
+import icc.pap.pl2.patrones.juego.Partida;
+import icc.pap.pl2.patrones.vista.VentanaPrincipal;
+
+public class App {
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        SwingUtilities.invokeLater(() -> new VentanaPrincipal(new Partida()).setVisible(true));
     }
 }

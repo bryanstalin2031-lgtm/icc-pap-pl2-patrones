@@ -1,17 +1,15 @@
 package icc.pap.pl2.patrones.vista;
 
-import java.util.Timer;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import icc.pap.pl2.patrones.juego.Partida;
 import icc.pap.pl2.patrones.juego.ResultadoOperacion;
 import icc.pap.pl2.patrones.models.Direccion;
 
-/** Arma la pantalla, captura acciones, las envía a Partida y refleja los resultados. */
 public class PanelPrincipal extends JPanel {
 
     private final Partida partida;
@@ -20,6 +18,7 @@ public class PanelPrincipal extends JPanel {
     private final PanelTablero panelTablero;
     private final PanelEstadisticas estadisticas = new PanelEstadisticas();
     private final PanelEfectos efectos = new PanelEfectos();
+    private final PanelFlechas flechas = new PanelFlechas();
     private final PanelPartida panelPartida;
     private final PanelGenerarComida panelComida;
     private final PanelRedondeado banner = new PanelRedondeado(14);
@@ -79,23 +78,16 @@ public class PanelPrincipal extends JPanel {
     }
 
     private PanelRedondeado tarjetaAyuda() {
-        PanelRedondeado t = new PanelRedondeado();
-        t.setLayout(new BoxLayout(t, BoxLayout.Y_AXIS));
-        t.setBorder(BorderFactory.createEmptyBorder(10, 14, 10, 14));
-        String[] lineas = {
-            "Mover: flechas del teclado.",
-            "Tablero " + partida.tablero().ancho() + " x " + partida.tablero().alto()
-                    + ", origen (0, 0) arriba a la izquierda.",
-            "Clic en una casilla del tablero: rellena X e Y."};
-        for (String linea : lineas) {
-            JLabel l = new JLabel(linea);
-            l.setFont(Tema.fuente(12f));
-            l.setForeground(Tema.TEXTO_SUAVE);
-            l.setAlignmentX(Component.LEFT_ALIGNMENT);
-            t.add(l);
-        }
-        return t;
-    }
+    PanelRedondeado t = new PanelRedondeado();
+    t.setLayout(new BorderLayout());
+    t.setBorder(BorderFactory.createEmptyBorder(12, 16, 12, 16));
+    JLabel texto = new JLabel("<html><b>Mover la serpiente</b><br>Usa las flechas del teclado</html>");
+    texto.setFont(Tema.fuente(13f));
+    texto.setForeground(Tema.TEXTO_SUAVE);
+    t.add(texto, BorderLayout.CENTER);
+    t.add(flechas, BorderLayout.EAST);
+    return t;
+}
 
     private void configurarTeclas() {
         asignarTecla(KeyEvent.VK_UP, Direccion.ARRIBA);
