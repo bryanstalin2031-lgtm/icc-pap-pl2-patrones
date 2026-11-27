@@ -1,7 +1,10 @@
 package icc.pap.pl2.patrones.models;
 
+
 public enum TipoComida {
-    NORMAL("Normal"), PUNTUACION_DOBLE("Puntuación Doble"), VELOCIDAD("Velocidad");
+    NORMAL("Normal"),
+    PUNTUACION_DOBLE("Puntuación doble"),
+    VELOCIDAD("Velocidad");
 
     private final String etiqueta;
 
@@ -13,5 +16,4 @@ public enum TipoComida {
     public String toString() {
         return etiqueta;
     }
-
 }
