@@ -48,7 +48,7 @@ public class Partida {
     }
 
     public ResultadoOperacion renaudar() {
-        return estado.renaudar(this);
+        return estado.reanudar(this);
     }
 
     public ResultadoOperacion reiniciar() {
@@ -68,7 +68,7 @@ public class Partida {
     }
 
     public ResultadoOperacion ubicarAletoria(TipoComida tipo) {
-        return estado.ubicarAletoria(this, tipo);
+        return estado.ubicarAleatoria(this, tipo);
     }
 
     public void cambiarEstado(EstadoPartida nuevo) {
